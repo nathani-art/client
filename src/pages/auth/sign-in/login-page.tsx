@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
+import { useAuth } from "@/app/providers/auth-provider";
 
 type IFormData = {
   email: string;
@@ -18,7 +19,7 @@ type IFormData = {
 };
 
 export default function LoginPage() {
-  // const context = useAuth();
+  const context = useAuth();
   const [formData, setFormData] = useState<IFormData>({
     email: "",
     password: "",
@@ -37,7 +38,6 @@ export default function LoginPage() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("request ...", "formData - ", formData);
     context?.logIn(formData);
   };
 

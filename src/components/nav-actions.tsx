@@ -104,9 +104,9 @@ export function NavActions() {
   const [isOpen, setIsOpen] = React.useState(false);
   const { theme, toggleTheme } = useTheme();
 
-  React.useEffect(() => {
-    setIsOpen(true);
-  }, []);
+  // React.useEffect(() => {
+  //   setIsOpen(true);
+  // }, []);
 
   return (
     <div className="flex items-center gap-2 text-sm">

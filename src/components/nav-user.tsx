@@ -25,17 +25,59 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { useAuth } from "@/app/providers/auth-provider";
+import { NavLink } from "react-router-dom";
+import { SettingsDialog } from "./settings-dialog";
+import { Button } from "./ui/button";
+import { useEffect, useState } from "react";
+import instance from "@/shared/api/axios-instance";
 
-export function NavUser({
-  user,
-}: {
-  user: {
-    name: string;
-    email: string;
-    avatar: string;
-  };
-}) {
+type User = {
+  id: string;
+  email: string;
+  name: string;
+};
+
+type ResponseDto<T> = {
+  message: string;
+  user: T;
+};
+
+async function getUserInfo(token: string) {
+  console.log("token in side-bar", token);
+  return instance.get("/api/protected", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+}
+
+// Передавалось пропсами
+// {
+//   user,
+// }: {
+//   user: {
+//     name: string;
+//     email: string;
+//     avatar: string;
+//   };
+// }
+
+export function NavUser() {
+  const [open, setOpen] = useState<boolean>(false);
+  const [user, setUser] = useState<User | null>(null);
+
+  const authContext = useAuth();
   const { isMobile } = useSidebar();
+
+  useEffect(() => {
+    if (authContext?.token) {
+      getUserInfo(authContext?.token).then((data) => {
+        console.log("ProfileData", data);
+        setUser(data.data.user);
+      });
+    }
+  }, []);
 
   return (
     <SidebarMenu>
@@ -47,12 +89,12 @@ export function NavUser({
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={user.avatar} alt={user.name} />
+                <AvatarImage src="/avatars/shadcn.jpg" alt={user?.name} />
                 <AvatarFallback className="rounded-lg">CN</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">{user.name}</span>
-                <span className="truncate text-xs">{user.email}</span>
+                <span className="truncate font-semibold">{user?.name}</span>
+                <span className="truncate text-xs">{user?.email}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
@@ -67,12 +109,12 @@ export function NavUser({
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user.avatar} alt={user.name} />
+                  <AvatarImage src="/avatars/shadcn.jpg" alt={user?.name} />
                   <AvatarFallback className="rounded-lg">CN</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">{user.name}</span>
-                  <span className="truncate text-xs">{user.email}</span>
+                  <span className="truncate font-semibold">{user?.name}</span>
+                  <span className="truncate text-xs">{user?.email}</span>
                 </div>
               </div>
             </DropdownMenuLabel>
@@ -85,10 +127,11 @@ export function NavUser({
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setOpen((prev) => !prev)}>
                 <BadgeCheck />
                 Account
               </DropdownMenuItem>
+
               <DropdownMenuItem>
                 <CreditCard />
                 Billing
@@ -99,13 +142,14 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={authContext?.logOut}>
               <LogOut />
               Log out
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>
+      <SettingsDialog open={open} setOpen={setOpen} />
     </SidebarMenu>
   );
 }

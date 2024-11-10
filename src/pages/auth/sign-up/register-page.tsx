@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { NavLink } from "react-router-dom";
 // import { useAuth } from "@/app/providers/AuthProvider";
 import { useState } from "react";
+import { useAuth } from "@/app/providers/auth-provider";
 
 type IFormData = {
   phone: string;
@@ -21,7 +22,7 @@ type IFormData = {
 };
 
 export default function RegisterPage() {
-  // const context = useAuth();
+  const context = useAuth();
   const [formData, setFormData] = useState<IFormData>({
     email: "",
     password: "",
@@ -42,7 +43,6 @@ export default function RegisterPage() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("request ...", "formDataRegister - ", formData);
     context?.logUp(formData);
   };
 
