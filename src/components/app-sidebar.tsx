@@ -27,6 +27,7 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import { useAuth } from "@/app/providers/auth-provider";
 
 // This is sample data.
 const data = {
@@ -159,6 +160,8 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const authContext = useAuth();
+
   return (
     <Sidebar
       collapsible="icon"
@@ -186,9 +189,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavMain items={data.navMain} />
         <NavProjects projects={data.projects} />
       </SidebarContent>
-      <SidebarFooter>
-        <NavUser user={data.user} />
-      </SidebarFooter>
+      <SidebarFooter>{authContext?.token && <NavUser />}</SidebarFooter>
       <SidebarRail />
     </Sidebar>
   );
