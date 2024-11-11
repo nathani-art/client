@@ -6,7 +6,7 @@ export default function EnhancedMonochromeLandingPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
 
-  const handleMouseMove = (event) => {
+  const handleMouseMove = (event: unknown) => {
     // Получаем координаты курсора относительно окна
     const { clientX: x, clientY: y } = event;
     setCursorPosition({ x, y });
@@ -17,7 +17,7 @@ export default function EnhancedMonochromeLandingPage() {
   const backgroundPositionY =
     (cursorPosition.y / window.innerHeight - 0.5) * 30; // Смещение по оси Y
   const backgroundPosition = `${50 + backgroundPositionX}% ${50 + backgroundPositionY}%`; // Центрированное смещение
-  const gradient = `linear-gradient(to right, rgba(${Math.floor((cursorPosition.x / window.innerWidth) * 255)}, 0, 255, 0.6), rgba(0, ${Math.floor((cursorPosition.y / window.innerHeight) * 255)}, 255, 0.6))`;
+  // const gradient = `linear-gradient(to right, rgba(${Math.floor((cursorPosition.x / window.innerWidth) * 255)}, 0, 255, 0.6), rgba(0, ${Math.floor((cursorPosition.y / window.innerHeight) * 255)}, 255, 0.6))`;
 
   return (
     <div className="min-h-screen text-white" onMouseMove={handleMouseMove}>
@@ -56,7 +56,7 @@ export default function EnhancedMonochromeLandingPage() {
       <main
         className="pt-13 h-screen inset-0 bg-[radial-gradient(circle_at_30%_30%,_#ffffff10_0%,_transparent_70%)]"
         style={{
-          backgroundImage: 'url("/public/images/under-water.PNG")',
+          backgroundImage: 'url("/images/under-water.PNG")',
           backgroundSize: "105%",
           backgroundPosition: backgroundPosition, // Двигаем картинку в зависимости от координат курсора
           // backgroundAttachment: "fixed",
