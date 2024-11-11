@@ -44,8 +44,16 @@ export default function LoginPage() {
   return (
     <div className="flex flex-col h-screen w-screen">
       <main className="flex-1 grid grid-cols-1 lg:grid-cols-2">
-        <section className="bg-primary text-primary-foreground p-6 sm:p-10 lg:p-16 flex flex-col justify-center">
-          <div className="max-w-md space-y-6">
+        <section
+          className="bg-primary text-primary-foreground p-6 flex flex-col justify-center "
+          style={{
+            backgroundImage: 'url("/public/images/avatar.PNG")',
+            backgroundSize: "cover",
+            backgroundPosition: "center 120%",
+          }}
+        >
+          {/* <div className="max-w-md space-y-6 bg-opacity-50 bg-black p-8 rounded-lg">
+            {" "}
             <h1 className="text-4xl font-bold tracking-tight">
               Join our vibrant community Simple Login
             </h1>
@@ -58,8 +66,9 @@ export default function LoginPage() {
                 <NavLink to="/">Learn More</NavLink>
               </Button>
             </div>
-          </div>
+          </div> */}
         </section>
+
         <section className="p-6 sm:p-10 lg:p-16 flex items-center justify-center">
           <div className="w-full max-w-lg flex-1">
             <CardHeader className="space-y-1 items-center mb-4">
